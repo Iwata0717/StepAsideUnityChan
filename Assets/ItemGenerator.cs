@@ -18,12 +18,20 @@ public class ItemGenerator : MonoBehaviour
 	//ゴール地点
 	private int goalPos = 360;
 
+	//
+	private float itemInstancePosZ;
+
 	//アイテムを出すx方向の範囲
 	private float posRange = 3.4f;
+
+	private Transform unitychan;
 
 	// Use this for initialization
 	void Start()
 	{
+		unitychan = GameObject.Find("unitychan").transform;
+
+		itemInstancePosZ = startPos;
 		/*
 		//一定の距離ごとにアイテムを生成
 		for (int i = startPos; i < goalPos; i += 15)
@@ -55,6 +63,7 @@ public class ItemGenerator : MonoBehaviour
 					if (1 <= item && item <= 6)
 					{
 						//コインを生成
+
 						GameObject coin = Instantiate(coinPrefab);
 						coin.transform.position = new Vector3(posRange * j, coin.transform.position.y, i + offsetZ);
 					}
@@ -70,7 +79,20 @@ public class ItemGenerator : MonoBehaviour
 		*/
 	}
 
-	public void ItemInstance(float itemInstancePosZ)
+	public void Update()
+	{
+		//プレイヤーのZ座標の45先がアイテム生成場所を超えたら
+		if (unitychan.position.z + 45 > this.itemInstancePosZ && unitychan.position.z + 45 < goalPos)
+		{
+			//アイテムを生成
+			ItemInstance();
+
+			//アイテム生成場所を更新
+			this.itemInstancePosZ += 15;
+		}
+	}
+
+	public void ItemInstance()
 	{
 		//どのアイテムを出すのかをランダムに設定
 		int num = Random.Range(1, 11);
