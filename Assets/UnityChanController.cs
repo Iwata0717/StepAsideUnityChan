@@ -46,15 +46,6 @@ public class UnityChanController : MonoBehaviour
 	//ジャンプボタン押下の判定
 	private bool isJButtonDown = false;
 
-	//ItemGenerator格納用
-	private ItemGenerator itemGenerator;
-
-	//アイテムを生成する場所格納用
-	private float itemInstancePosZ = 80;
-
-	//ゴール地点
-	private int goalPos = 360;
-
 	// Use this for initialization
 	void Start()
 	{
@@ -72,9 +63,6 @@ public class UnityChanController : MonoBehaviour
 
 		//シーン中のscoreTextオブジェクトを取得
 		this.scoreText = GameObject.Find("ScoreText");
-
-		//シーン中のItemGeneratorオブジェクトを取得
-		this.itemGenerator = GameObject.Find("ItemGenerator").GetComponent<ItemGenerator>();
 	}
 
 	// Update is called once per frame
@@ -130,16 +118,6 @@ public class UnityChanController : MonoBehaviour
 
 		//Unityちゃんに速度を与える
 		this.myRigidbody.velocity = new Vector3(inputVelocityX, inputVelocityY, velocityZ);
-
-		//プレイヤーのZ座標の45先がアイテム生成場所を超えたら
-		if(transform.position.z + 45 > this.itemInstancePosZ && transform.position.z + 45 < goalPos)
-		{
-			//アイテムを生成
-			itemGenerator.ItemInstance(this.itemInstancePosZ);
-
-			//アイテム生成場所を更新
-			this.itemInstancePosZ += 15;
-		}
 	}
 
 	//トリガーモードで他のオブジェクトと接触した場合の処理
